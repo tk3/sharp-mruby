@@ -17,6 +17,8 @@ public:
     ~MRuby();
     !MRuby();
 
+    static void Run(String ^s);
+
     void ExecString(String ^s);
 };
 
