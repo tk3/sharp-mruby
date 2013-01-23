@@ -8,7 +8,7 @@
 #include "mruby/dump.h"
 #include "mruby/compile.h"
 
-static int defineARGV(mrb_state *mrb, array<Object^>^ argv);
+static int argv_sharp2mrb(mrb_state *mrb, array<Object^>^ argv);
 
 MRuby::MRuby()
 {
@@ -75,7 +75,7 @@ void MRuby::Run(String ^s, ... array<Object^>^ argv)
 
     mrb = mrb_open();
 
-    defineARGV(mrb, argv);
+    argv_sharp2mrb(mrb, argv);
 
     ptr = Marshal::StringToHGlobalAnsi(s);
 
@@ -95,7 +95,7 @@ void MRuby::Run(String ^s, ... array<Object^>^ argv)
     mrb_close(mrb);
 }
 
-static int defineARGV(mrb_state *mrb, array<Object^>^ argv)
+static int argv_sharp2mrb(mrb_state *mrb, array<Object^>^ argv)
 {
     int n = argv->GetLength(0);
     mrb_value rb_argv;
