@@ -19,7 +19,5 @@ public:
 
     static void Run(String ^s);
     static void Run(String ^s, ... array<Object^>^ argv);
-
-    void ExecString(String ^s);
 };
 

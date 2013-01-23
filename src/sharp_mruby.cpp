@@ -95,28 +95,6 @@ void MRuby::Run(String ^s, ... array<Object^>^ argv)
     mrb_close(mrb);
 }
 
-void MRuby::ExecString(String^ s)
-{
-    IntPtr ptr;
-    mrb_value ret;
-    mrb_value output;
-
-    ptr = Marshal::StringToHGlobalAnsi(s);
-
-    ret = mrb_load_string(mrb, (char *)ptr.ToPointer());
-
-    Marshal::FreeHGlobal(ptr);
-
-    if (mrb->exc) {
-        if (!mrb_undef_p(ret)) {
-            output = mrb_obj_value(mrb->exc);
-
-            output = mrb_funcall(mrb, output, "inspect", 0);
-            fwrite(RSTRING_PTR(output), RSTRING_LEN(output), 1, stdout);
-        }
-    }
-}
-
 static int defineARGV(mrb_state *mrb, array<Object^>^ argv)
 {
     int n = argv->GetLength(0);
