@@ -30,12 +30,13 @@ CLI_LFLAGS = %Q{/ERRORREPORT:PROMPT /INCREMENTAL /NOLOGO #{MRUBY_LIB} #{DEF_LIBS
 
 require 'rake/clean'
 
-CLOBBER.include('build/*')
 
 CLI_NAME = "sharp-mruby"
 CLI_OUT  = "build/sharpmruby/"
 CLI_SRCS = FileList["src/*.cpp"]
 CLI_OBJS = CLI_SRCS.map{|f| CLI_OUT + File.basename(f).ext('obj')}
+
+CLOBBER.include(CLI_OUT)
 
 task :default => [:init, "sharp-mruby"]
 
