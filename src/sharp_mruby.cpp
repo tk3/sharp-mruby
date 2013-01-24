@@ -9,6 +9,7 @@
 #include "mruby/compile.h"
 
 static int argv_sharp2mrb(mrb_state *mrb, array<Object^>^ argv);
+static mrb_value sharp2mrv(mrb_state *mrb, Object^ obj);
 
 MRuby::MRuby()
 {
@@ -103,23 +104,31 @@ static int argv_sharp2mrb(mrb_state *mrb, array<Object^>^ argv)
     rb_argv = mrb_ary_new(mrb);
 
     for (int i = 0; i < n; i++) {
-        Object^ obj = argv[i];
-        Type^ t = obj->GetType();
-
-        if (t == String::typeid) {
-            IntPtr ptr;
-            char   *val;
-
-            ptr = Marshal::StringToHGlobalAnsi((String ^)obj);
-            val = (char *)ptr.ToPointer();
-
-            mrb_ary_push(mrb, rb_argv, mrb_str_new(mrb, val, strlen(val)));
-
-            Marshal::FreeHGlobal(ptr);
-        }
+        mrb_ary_push(mrb, rb_argv, sharp2mrv(mrb, argv[i]));
     }
 
     mrb_define_global_const(mrb, "ARGV", rb_argv);
 
     return 0;
 }
+
+static mrb_value sharp2mrv(mrb_state *mrb, Object^ obj)
+{
+    Type^ t = obj->GetType();
+    mrb_value mrb_val;
+
+    if (t == String::typeid) {
+        IntPtr ptr;
+        char   *val;
+
+        ptr = Marshal::StringToHGlobalAnsi((String ^)obj);
+        val = (char *)ptr.ToPointer();
+
+        mrb_val = mrb_str_new(mrb, val, strlen(val));
+
+        Marshal::FreeHGlobal(ptr);
+    }
+
+    return mrb_val;
+}
+
