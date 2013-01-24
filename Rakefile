@@ -31,20 +31,20 @@ CLI_LFLAGS = %Q{/ERRORREPORT:PROMPT /INCREMENTAL /NOLOGO #{MRUBY_LIB} #{DEF_LIBS
 require 'rake/clean'
 
 
-CLI_NAME = "sharp-mruby"
+CLI_NAME = "SharpMRuby"
 CLI_OUT  = "build/sharpmruby/"
 CLI_SRCS = FileList["src/*.cpp"]
 CLI_OBJS = CLI_SRCS.map{|f| CLI_OUT + File.basename(f).ext('obj')}
 
 CLOBBER.include(CLI_OUT)
 
-task :default => [:init, "sharp-mruby"]
+task :default => [:init, "SharpMRuby"]
 
 task :init do
   mkdir_p(CLI_OUT)
 end
 
-file "sharp-mruby" => [CLI_OBJS] do |task|
+file "SharpMRuby" => [CLI_OBJS] do |task|
   objs = task.prerequisites.map{|f| CLI_OUT + File.basename(f)}.join(' ')
 
   sh %Q{link #{CLI_LFLAGS} /OUT:#{CLI_OUT}#{task.name}.dll } +
@@ -57,7 +57,6 @@ rule '.obj' => [ proc {|n| "src/" + File.basename(n).ext('cpp')} ] do |t|
      %Q{/Fo#{CLI_OUT} /Fd#{CLI_OUT}vc100.pdb #{t.source}}
 end
 
-require "pp"
 
 namespace :example do
   task :init do
