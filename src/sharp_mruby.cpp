@@ -123,6 +123,8 @@ static mrb_value sharp2mrv(mrb_state *mrb, Object^ obj)
         } else {
             mrb_val = mrb_false_value();
         }
+    } else if (t == Int32::typeid) {
+        mrb_val = mrb_fixnum_value((mrb_int)obj);
     } else if (t == String::typeid) {
         IntPtr ptr;
         char   *val;
