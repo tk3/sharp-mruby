@@ -2,18 +2,31 @@ using System;
 
 class Example02
 {
+    static  string src = @"
+        ARGV.each do |a|
+          puts ""#{a}, #{a.class}""
+        end";
+
     static void Main()
     {
-//        MRuby.Run("puts \"Welcom to mruby\"");
         TestString();
+        TestBoolean();
+        TestInt32();
     }
 
     static void TestString()
     {
-        string src = "ARGV.each do |a| \n"
-                   + "  puts \"#{a}, #{a.class}\"\n"
-                   + "end";
 
-        MRuby.Run(src, "aa", "bb", "cc");
+        MRuby.Run(src, "00", "aa", "bb", "cc");
+    }
+
+    static void TestBoolean()
+    {
+        MRuby.Run(src, "01", true, false);
+    }
+
+    static void TestInt32()
+    {
+        MRuby.Run(src, "02", 11, 23, 35);
     }
 }
