@@ -117,7 +117,13 @@ static mrb_value sharp2mrv(mrb_state *mrb, Object^ obj)
     Type^ t = obj->GetType();
     mrb_value mrb_val;
 
-    if (t == String::typeid) {
+    if (t == Boolean::typeid) {
+        if ((Boolean)obj == true) {
+            mrb_val = mrb_true_value();
+        } else {
+            mrb_val = mrb_false_value();
+        }
+    } else if (t == String::typeid) {
         IntPtr ptr;
         char   *val;
 
@@ -127,6 +133,8 @@ static mrb_value sharp2mrv(mrb_state *mrb, Object^ obj)
         mrb_val = mrb_str_new(mrb, val, strlen(val));
 
         Marshal::FreeHGlobal(ptr);
+    } else {
+        mrb_val = mrb_nil_value();
     }
 
     return mrb_val;
