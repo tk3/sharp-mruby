@@ -68,5 +68,11 @@ namespace :example do
       sh %Q{csc /nologo /t:exe /out:example01.exe /reference:#{CLI_NAME}.dll example01.cs}
     end
   end
+
+  task "02" => :init do |t|
+    cd "example" do
+      sh %Q{csc /nologo /t:exe /out:example02.exe /reference:#{CLI_NAME}.dll example02.cs}
+    end
+  end
 end
 
